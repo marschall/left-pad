@@ -23,7 +23,7 @@ public final class CharSequenceUtils {
     return new PrefixCharSequence(padding, length - s.length(), s);
   }
 
-  static final class PrefixCharSequence implements CharSequence {
+  static final class PrefixCharSequence implements CharSequence, Comparable<CharSequence> {
 
     private final char padding;
 
@@ -138,6 +138,17 @@ public final class CharSequenceUtils {
       }
     }
 
+    @Override
+    public int compareTo(CharSequence o) {
+      for (int i = 0, len = Math.min(this.length(), o.length()); i < len; i++) {
+        char a = this.charAt(i);
+        char b = o.charAt(i);
+        if (a != b) {
+          return a - b;
+        }
+      }
+      return this.length() - o.length();
+    }
 
   }
 

@@ -10,7 +10,9 @@ class CharSequenceUtilsTests {
 
   @Test
   void testHashCode() {
-    assertEquals("00123".hashCode(), CharSequenceUtils.leftPad("123", '0', 5).hashCode());
+    assertEquals(CharSequenceUtils.leftPad("123", '0', 5), "00123");
+    assertEquals(CharSequenceUtils.leftPad("123", '0', 3), "123");
+    assertEquals(CharSequenceUtils.leftPad("", '0', 0), "");
   }
 
   @Test
