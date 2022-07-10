@@ -18,6 +18,12 @@ public final class CharSequenceUtils {
     if (Character.isSurrogate(padding)) {
       throw new IllegalArgumentException();
     }
+    if (s.isEmpty()) {
+      if (length == 0) {
+        return "";
+      }
+      return new RepeatingCharSequence(padding, length);
+    }
     if (length == s.length()) {
       return s;
     }
@@ -91,7 +97,7 @@ public final class CharSequenceUtils {
         return this.tail.subSequence(start - this.padLength, end - this.padLength);
       }
       if (end <= this.padLength) {
-        return new RepeatingSequence(this.padding, end - start);
+        return new RepeatingCharSequence(this.padding, end - start);
       }
       return new PrefixCharSequence(this.padding, this.padLength - start, this.tail.subSequence(0, end - this.padding));
     }
@@ -176,14 +182,15 @@ public final class CharSequenceUtils {
 
   }
 
-  static final class RepeatingSequence implements CharSequence, Comparable<CharSequence> {
+  static final class RepeatingCharSequence implements CharSequence, Comparable<CharSequence> {
 
     private final char content;
 
+    // if we specialize this into a short we save 8 bytes on JDK 17+
+    // due to a 6 byte object alignment gap
     private final int length;
 
-
-    RepeatingSequence(char content, int length) {
+    RepeatingCharSequence(char content, int length) {
       if (length <= 0) {
         throw new IllegalArgumentException();
       }
@@ -216,7 +223,7 @@ public final class CharSequenceUtils {
       if ((end - start) == this.length) {
         return this;
       }
-      return new RepeatingSequence(this.content, end - start);
+      return new RepeatingCharSequence(this.content, end - start);
     }
 
     @Override
