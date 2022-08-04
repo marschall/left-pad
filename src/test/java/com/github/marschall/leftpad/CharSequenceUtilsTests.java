@@ -15,10 +15,10 @@ class CharSequenceUtilsTests {
 
   @Test
   void testHashCode() {
-    assertEquals(leftPad("123", '0', 5).hashCode(), "00123".hashCode());
-    assertEquals(leftPad("123", '0', 3).hashCode(), "123".hashCode());
-    assertEquals(leftPad("", '0', 0).hashCode(), "".hashCode());
-    assertEquals(leftPad("", '0', 3).hashCode(), "000".hashCode());
+    assertEquals("00123".hashCode(), leftPad("123", '0', 5).hashCode());
+    assertEquals("123".hashCode(), leftPad("123", '0', 3).hashCode());
+    assertEquals("".hashCode(), leftPad("", '0', 0).hashCode());
+    assertEquals("000".hashCode(), leftPad("", '0', 3).hashCode());
   }
 
   @Test
