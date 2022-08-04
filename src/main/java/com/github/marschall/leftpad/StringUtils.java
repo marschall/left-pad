@@ -2,6 +2,10 @@ package com.github.marschall.leftpad;
 
 import java.util.Objects;
 
+
+/**
+ * Utility methods for dealing with {@link String}.
+ */
 public final class StringUtils {
 
   private StringUtils() {

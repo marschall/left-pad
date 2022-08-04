@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
+/**
+ * Utility methods for dealing with {@link CharSequence}.
+ */
 public final class CharSequenceUtils {
 
   private CharSequenceUtils() {
@@ -99,7 +102,10 @@ public final class CharSequenceUtils {
       if (end <= this.padLength) {
         return new RepeatingCharSequence(this.padding, end - start);
       }
-      return new PrefixCharSequence(this.padding, this.padLength - start, this.tail.subSequence(0, end - this.padding));
+      if (start == 0 && end == this.length()) {
+        return this;
+      }
+      return new PrefixCharSequence(this.padding, this.padLength - start, this.tail.subSequence(0, end - this.padLength));
     }
 
     @Override
@@ -157,7 +163,7 @@ public final class CharSequenceUtils {
             }
           }
           for (int i = this.padLength; i < this.length(); i++) {
-            if (c.charAt(i) != this.tail.charAt(i - this.padding)) {
+            if (c.charAt(i) != this.tail.charAt(i - this.padLength)) {
               return false;
             }
           }

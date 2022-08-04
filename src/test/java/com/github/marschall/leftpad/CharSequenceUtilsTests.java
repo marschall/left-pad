@@ -29,7 +29,33 @@ class CharSequenceUtilsTests {
     assertEquals(leftPad("", 3, '0'), "000");
 
     assertNotEquals("00123", leftPad("123", 5, '0'));
+    assertEquals("00123", leftPad("123", 5, '0').toString());
     assertEquals(leftPad("123", 5, '0'), "00123");
+  }
+
+  @Test
+  void testSubSequence() {
+    assertEquals(leftPad("123", 5, '0').subSequence(0, 0), "");
+    assertEquals(leftPad("123", 5, '0').subSequence(0, 2), "00");
+    assertEquals(leftPad("123", 5, '0').subSequence(2, 5), "123");
+    assertEquals(leftPad("123", 5, '0').subSequence(1, 4), "012");
+    assertEquals(leftPad("123", 5, '0').subSequence(1, 5), "0123");
+    assertEquals(leftPad("123", 5, '0').subSequence(0, 5), "00123");
+  }
+  
+  @Test
+  void testSubSequenceEquals() {
+    CharSequence sequence1 = leftPad("123", 6, '0'); // 000123
+    CharSequence sequence2 = leftPad("124", 5, '0'); // 00124
+    assertEquals(sequence1.subSequence(1, 5), sequence2.subSequence(0, 4));
+  }
+
+  @Test
+  void testPrefixSubSequence() {
+    assertEquals("00", leftPad("123", 5, '0').subSequence(0, 2).toString());
+    assertEquals("0", leftPad("123", 5, '0').subSequence(0, 2).subSequence(1, 2).toString());
+    assertEquals("00".hashCode(), leftPad("123", 5, '0').subSequence(0, 2).hashCode());
+    assertEquals(2, leftPad("123", 5, '0').subSequence(0, 2).length());
   }
 
   @Test
