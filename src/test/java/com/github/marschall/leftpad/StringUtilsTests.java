@@ -10,23 +10,23 @@ class StringUtilsTests {
 
   @Test
   void testLeftPad() {
-    assertEquals("00123", leftPad("123", '0', 5));
-    assertEquals("123", leftPad("123", '0', 3));
-    assertEquals("", leftPad("", '0', 0));
+    assertEquals("00123", leftPad("123", 5, '0'));
+    assertEquals("123", leftPad("123", 3, '0'));
+    assertEquals("", leftPad("", 0, '0'));
   }
 
   @Test
   void testNull() {
-    assertThrows(NullPointerException.class, () -> leftPad(null, '0', 2));
+    assertThrows(NullPointerException.class, () -> leftPad(null, 2, '0'));
   }
 
   @Test
   void testIllegalArguments() {
-    assertThrows(IllegalArgumentException.class, () -> leftPad("123", '0', 2));
-    assertThrows(IllegalArgumentException.class, () -> leftPad("123", '0', -5));
+    assertThrows(IllegalArgumentException.class, () -> leftPad("123", 2, '0'));
+    assertThrows(IllegalArgumentException.class, () -> leftPad("123", -5, '0'));
 
-    assertThrows(IllegalArgumentException.class, () -> leftPad("123", "😞".charAt(0), 5));
-    assertThrows(IllegalArgumentException.class, () -> leftPad("123", "😞".charAt(1), 5));
+    assertThrows(IllegalArgumentException.class, () -> leftPad("123", 5, "😞".charAt(0)));
+    assertThrows(IllegalArgumentException.class, () -> leftPad("123", 5, "😞".charAt(1)));
   }
 
 }

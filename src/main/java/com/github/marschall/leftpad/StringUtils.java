@@ -8,7 +8,7 @@ public final class StringUtils {
     throw new AssertionError("not instantiable");
   }
 
-  public static String leftPad(String s, char padding, int length) {
+  public static String leftPad(String s, int length, char padding) {
     Objects.requireNonNull(s);
     if ((length < 0) || (length < s.length())) {
       throw new IllegalArgumentException();

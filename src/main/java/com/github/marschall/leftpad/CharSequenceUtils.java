@@ -10,7 +10,7 @@ public final class CharSequenceUtils {
     throw new AssertionError("not instantiable");
   }
 
-  public static CharSequence leftPad(CharSequence s, char padding, int length) {
+  public static CharSequence leftPad(CharSequence s, int length, char padding) {
     Objects.requireNonNull(s);
     if ((length < 0) || (length < s.length())) {
       throw new IllegalArgumentException();
@@ -30,7 +30,7 @@ public final class CharSequenceUtils {
     return new PrefixCharSequence(padding, length - s.length(), s);
   }
 
-  public static void leftPadInto(CharSequence s, char padding, int length, Appendable target) throws IOException {
+  public static void leftPadInto(CharSequence s, int length, char padding, Appendable target) throws IOException {
     Objects.requireNonNull(s);
     if ((length < 0) || (length < s.length())) {
       throw new IllegalArgumentException();

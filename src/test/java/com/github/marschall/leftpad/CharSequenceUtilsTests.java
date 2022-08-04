@@ -15,51 +15,51 @@ class CharSequenceUtilsTests {
 
   @Test
   void testHashCode() {
-    assertEquals("00123".hashCode(), leftPad("123", '0', 5).hashCode());
-    assertEquals("123".hashCode(), leftPad("123", '0', 3).hashCode());
-    assertEquals("".hashCode(), leftPad("", '0', 0).hashCode());
-    assertEquals("000".hashCode(), leftPad("", '0', 3).hashCode());
+    assertEquals("00123".hashCode(), leftPad("123", 5, '0').hashCode());
+    assertEquals("123".hashCode(), leftPad("123", 3, '0').hashCode());
+    assertEquals("".hashCode(), leftPad("", 0, '0').hashCode());
+    assertEquals("000".hashCode(), leftPad("", 3, '0').hashCode());
   }
 
   @Test
   void testEquals() {
-    assertEquals(leftPad("123", '0', 5), "00123");
-    assertEquals(leftPad("123", '0', 3), "123");
-    assertEquals(leftPad("", '0', 0), "");
-    assertEquals(leftPad("", '0', 3), "000");
+    assertEquals(leftPad("123", 5, '0'), "00123");
+    assertEquals(leftPad("123", 3, '0'), "123");
+    assertEquals(leftPad("", 0, '0'), "");
+    assertEquals(leftPad("", 3, '0'), "000");
 
-    assertNotEquals("00123", leftPad("123", '0', 5));
-    assertEquals(leftPad("123", '0', 5), "00123");
+    assertNotEquals("00123", leftPad("123", 5, '0'));
+    assertEquals(leftPad("123", 5, '0'), "00123");
   }
 
   @Test
   void testEqualsCombined() {
-    assertEquals(leftPad(leftPad("123", '0', 5), ' ', 7), "  00123");
+    assertEquals(leftPad(leftPad("123", 5, '0'), 7, ' '), "  00123");
   }
 
   @Test
   void testContentEquals() {
-    assertTrue("00123".contentEquals(leftPad("123", '0', 5)));
+    assertTrue("00123".contentEquals(leftPad("123", 5, '0')));
   }
 
   @Test
   void testIllegalArguments() {
-    assertThrows(IllegalArgumentException.class, () -> leftPad("123", '0', 2));
-    assertThrows(IllegalArgumentException.class, () -> leftPad("123", '0', -5));
+    assertThrows(IllegalArgumentException.class, () -> leftPad("123", 2, '0'));
+    assertThrows(IllegalArgumentException.class, () -> leftPad("123", -5, '0'));
 
-    assertThrows(IllegalArgumentException.class, () -> leftPad("123", "😞".charAt(0), 5));
-    assertThrows(IllegalArgumentException.class, () -> leftPad("123", "😞".charAt(1), 5));
+    assertThrows(IllegalArgumentException.class, () -> leftPad("123", 5, "😞".charAt(0)));
+    assertThrows(IllegalArgumentException.class, () -> leftPad("123", 5, "😞".charAt(1)));
   }
 
   @Test
   void testNull() {
-    assertThrows(NullPointerException.class, () -> leftPad(null, '0', 2));
+    assertThrows(NullPointerException.class, () -> leftPad(null, 2, '0'));
   }
 
   @Test
   void testLeftPadInto() throws IOException {
     StringBuilder buffer = new StringBuilder();
-    leftPadInto("123", '0', 5, buffer);
+    leftPadInto("123", 5, '0', buffer);
     assertEquals("00123", buffer.toString());
   }
 
