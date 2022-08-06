@@ -13,6 +13,21 @@ public final class CharSequenceUtils {
     throw new AssertionError("not instantiable");
   }
 
+  /**
+   * Pads a given {@link CharSequence} with the given {@code char} from the left/start.
+   * 
+   * @param s the {@link CharSequence} to pad, not {@code null}
+   * @param length the desired total length in code units
+   * @param padding the padding character to apply
+   * @return a {@link CharSequence} of length {@code length} padded with {@code padding}
+   *         applied to the start of {@code s},
+   *         no guarantees are made about the implementation class
+   * @throws NullPointerException if {@code s} is {@code null}
+   * @throws IllegalArgumentException if {@code length} is negative,
+   *                                  if {@code padding} is a surrogate character,
+   *                                  if {@code length} is less than the length of {@code s}
+   * @see Character#isSurrogate(char)
+   */
   public static CharSequence leftPad(CharSequence s, int length, char padding) {
     Objects.requireNonNull(s);
     if ((length < 0) || (length < s.length())) {
@@ -33,8 +48,24 @@ public final class CharSequenceUtils {
     return new PrefixCharSequence(padding, length - s.length(), s);
   }
 
+  /**
+   * Pads a given {@link CharSequence} with the given {@code char} from the left/start
+   * into a target {@link Appendable}.
+   * 
+   * @param s the {@link CharSequence} to pad, not {@code null}
+   * @param length the desired total length in code units
+   * @param padding the padding character to apply
+   * @param target the target {@link Appendable} into which to pad, not {@code null}
+   * @throws NullPointerException if {@code s} is {@code null},
+   *                              if {@code target} is {@code null}
+   * @throws IllegalArgumentException if {@code length} is negative,
+   *                                  if {@code padding} is a surrogate character,
+   *                                  if {@code length} is less than the length of {@code s}
+   * @see Character#isSurrogate(char)
+   */
   public static void leftPadInto(CharSequence s, int length, char padding, Appendable target) throws IOException {
     Objects.requireNonNull(s);
+    Objects.requireNonNull(target);
     if ((length < 0) || (length < s.length())) {
       throw new IllegalArgumentException();
     }

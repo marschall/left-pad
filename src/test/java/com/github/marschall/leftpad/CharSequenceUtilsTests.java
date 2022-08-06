@@ -38,6 +38,10 @@ class CharSequenceUtilsTests {
     assertEquals("00123", leftPad("123", 5, '0').toString());
     assertEquals(leftPad("123", 5, '0'), "00123");
     assertNotEquals(leftPad("123", 5, '0'), Integer.valueOf(123));
+    assertNotEquals(leftPad("123", 5, '0'), "00122");
+    assertNotEquals(leftPad("123", 5, '0'), "0O123");
+    assertNotEquals(leftPad("123", 5, '0'), leftPad("1234", 5, '0'));
+    assertNotEquals(leftPad("1", 3, '0'), leftPad("1", 4, '0').subSequence(0, 3));
   }
 
   @Test
@@ -108,6 +112,27 @@ class CharSequenceUtilsTests {
   }
 
   @Test
+  void testIndexOutOfBounds() {
+    CharSequence padded = leftPad("123", 5, '0');
+    assertThrows(IndexOutOfBoundsException.class, () -> padded.charAt(-1));
+    assertThrows(IndexOutOfBoundsException.class, () -> padded.charAt(5));
+  }
+
+  @Test
+  void testPrefixIndexOutOfBounds() {
+    CharSequence prefix = leftPad("123", 5, '0').subSequence(0, 2);
+    assertThrows(IndexOutOfBoundsException.class, () -> prefix.charAt(-1));
+    assertThrows(IndexOutOfBoundsException.class, () -> prefix.charAt(2));
+  }
+
+  @Test
+  void testPrefixCharAt() {
+    CharSequence prefix = leftPad("123", 5, '0').subSequence(0, 2);
+    assertEquals('0', prefix.charAt(0));
+    assertEquals('0', prefix.charAt(1));
+  }
+
+  @Test
   void testNull() {
     assertThrows(NullPointerException.class, () -> leftPad(null, 2, '0'));
   }
@@ -118,7 +143,7 @@ class CharSequenceUtilsTests {
     leftPadInto("123", 5, '0', buffer);
     assertEquals("00123", buffer.toString());
   }
-  
+
   @Test
   void testLeftPadIntoIllegalArguments() throws IOException {
     StringBuilder buffer = new StringBuilder();
