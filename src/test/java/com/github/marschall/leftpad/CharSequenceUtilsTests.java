@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -79,10 +80,13 @@ class CharSequenceUtilsTests {
     assertEquals(leftPad("123", 5, '0').subSequence(1, 5), "0123");
     assertEquals(leftPad("123", 5, '0').subSequence(0, 5), "00123");
     assertNotEquals(leftPad("123", 5, '0').subSequence(0, 1), Integer.valueOf(0));
+    assertEquals("", leftPad("123", 5, '0').subSequence(0, 2).subSequence(1, 1));
 
     CharSequence repeating = leftPad("123", 5, '0').subSequence(0, 2);
     assertEquals(repeating, repeating);
+    assertSame(repeating, repeating.subSequence(0, 2));
     assertNotEquals(repeating, repeating.subSequence(0, 1));
+    assertNotEquals(repeating, "01");
   }
   
   @Test
@@ -98,6 +102,14 @@ class CharSequenceUtilsTests {
     assertEquals("0", leftPad("123", 5, '0').subSequence(0, 2).subSequence(1, 2).toString());
     assertEquals("00".hashCode(), leftPad("123", 5, '0').subSequence(0, 2).hashCode());
     assertEquals(2, leftPad("123", 5, '0').subSequence(0, 2).length());
+  }
+
+  @Test
+  void testPrefixSubSequenceCompareTo() {
+    Comparable padded = (Comparable) leftPad("OOO", 5, 'Y').subSequence(0, 2);
+    assertTrue(padded.compareTo("ZZ") < 0);
+    assertEquals(0, padded.compareTo("YY"));
+    assertTrue(padded.compareTo("XX") > 0);
   }
 
   @Test
