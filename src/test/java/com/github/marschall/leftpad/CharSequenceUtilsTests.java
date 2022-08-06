@@ -45,6 +45,14 @@ class CharSequenceUtilsTests {
   }
 
   @Test
+  void testCompareTo() {
+    Comparable padded = (Comparable) leftPad("123", 5, '0');
+    assertTrue(padded.compareTo("00124") < 0);
+    assertEquals(0, padded.compareTo("00123"));
+    assertTrue(padded.compareTo("00122") > 0);
+  }
+
+  @Test
   void testChars() {
     assertArrayEquals(new int[]{'0', '0', '1', '2', '3'}, leftPad("123", 5, '0').chars().toArray());
     assertArrayEquals(new int[]{'0', '0'}, leftPad("123", 5, '0').subSequence(0, 2).chars().toArray());

@@ -282,6 +282,7 @@ public final class CharSequenceUtils {
         buffer.append(this.content);
       }
       return buffer.toString();
+      // alternative implementation
 //      return String.valueOf(this.content).repeat(this.length);
     }
 
