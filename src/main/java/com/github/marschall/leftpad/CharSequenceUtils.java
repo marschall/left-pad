@@ -48,6 +48,10 @@ public final class CharSequenceUtils {
     target.append(s);
   }
 
+  /**
+   * A {@link CharSequence} made of a prefix and a suffix.
+   * The prefix is a single {@code char} repeated n-times and the suffix is an other {@link CharSequence}.
+   */
   static final class PrefixCharSequence implements CharSequence, Comparable<CharSequence> {
 
     private final char padding;
@@ -188,6 +192,9 @@ public final class CharSequenceUtils {
 
   }
 
+  /**
+   * A {@link CharSequence} that is just a single {@code char} repeated n-times.
+   */
   static final class RepeatingCharSequence implements CharSequence, Comparable<CharSequence> {
 
     private final char content;
@@ -262,6 +269,9 @@ public final class CharSequenceUtils {
         return true;
       }
       if (obj instanceof CharSequence c) {
+        if (this.length != c.length()) {
+          return false;
+        }
         for (int i = 0; i < this.length; i++) {
           if (c.charAt(i) != this.content) {
             return false;

@@ -2,7 +2,9 @@ package com.github.marschall.leftpad;
 
 import static com.github.marschall.leftpad.CharSequenceUtils.leftPad;
 import static com.github.marschall.leftpad.CharSequenceUtils.leftPadInto;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -28,9 +30,32 @@ class CharSequenceUtilsTests {
     assertEquals(leftPad("", 0, '0'), "");
     assertEquals(leftPad("", 3, '0'), "000");
 
+    CharSequence padded = leftPad("123", 5, '0');
+    assertEquals(padded, padded);
+    assertNotEquals(padded, padded.subSequence(1, 5));
+
     assertNotEquals("00123", leftPad("123", 5, '0'));
     assertEquals("00123", leftPad("123", 5, '0').toString());
     assertEquals(leftPad("123", 5, '0'), "00123");
+    assertNotEquals(leftPad("123", 5, '0'), Integer.valueOf(123));
+  }
+
+  @Test
+  void testChars() {
+    assertArrayEquals(new int[]{'0', '0', '1', '2', '3'}, leftPad("123", 5, '0').chars().toArray());
+    assertArrayEquals(new int[]{'0', '0'}, leftPad("123", 5, '0').subSequence(0, 2).chars().toArray());
+  }
+
+  @Test
+  void testIsEmpty() {
+    assertFalse(leftPad("123", 5, '0').isEmpty());
+    assertFalse(leftPad("123", 5, '0').subSequence(0, 2).isEmpty());
+  }
+  
+  @Test
+  void testLength() {
+    assertEquals(5, leftPad("123", 5, '0').length());
+    assertEquals(2, leftPad("123", 5, '0').subSequence(0, 2).length());
   }
 
   @Test
@@ -41,6 +66,11 @@ class CharSequenceUtilsTests {
     assertEquals(leftPad("123", 5, '0').subSequence(1, 4), "012");
     assertEquals(leftPad("123", 5, '0').subSequence(1, 5), "0123");
     assertEquals(leftPad("123", 5, '0').subSequence(0, 5), "00123");
+    assertNotEquals(leftPad("123", 5, '0').subSequence(0, 1), Integer.valueOf(0));
+
+    CharSequence repeating = leftPad("123", 5, '0').subSequence(0, 2);
+    assertEquals(repeating, repeating);
+    assertNotEquals(repeating, repeating.subSequence(0, 1));
   }
   
   @Test
@@ -87,6 +117,17 @@ class CharSequenceUtilsTests {
     StringBuilder buffer = new StringBuilder();
     leftPadInto("123", 5, '0', buffer);
     assertEquals("00123", buffer.toString());
+  }
+  
+  @Test
+  void testLeftPadIntoIllegalArguments() throws IOException {
+    StringBuilder buffer = new StringBuilder();
+
+    assertThrows(IllegalArgumentException.class, () -> leftPadInto("123", 2, '0', buffer));
+    assertThrows(IllegalArgumentException.class, () -> leftPadInto("123", -5, '0', buffer));
+
+    assertThrows(IllegalArgumentException.class, () -> leftPadInto("123", 5, "😞".charAt(0), buffer));
+    assertThrows(IllegalArgumentException.class, () -> leftPadInto("123", 5, "😞".charAt(1), buffer));
   }
 
 }
